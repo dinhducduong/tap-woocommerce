@@ -30,7 +30,7 @@ $ tap-woocommerce --config config.json --catalog catalog.json --state state.json
 }
 ```
 
-The `consumer_key` and `consumer_secret` keys are generated from within WooCommerce settings > Advancde > REST API > API Keys
+The `consumer_key` and `consumer_secret` keys are generated from within WooCommerce settings > Advanced > REST API > API Keys. [Learn more on the WooCommerce docs](https://woocommerce.github.io/woocommerce-rest-api-docs/#rest-api-keys)
 
 The `site_url` should be the URL of the WordPress site containing your WooCommerce shop.
 
