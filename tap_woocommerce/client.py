@@ -62,6 +62,10 @@ class WooCommerceStream(RESTStream):
             params = self.get_url_params(context, next_page_token=next_page_token)
             resp = wcapi.get(self.path, params=params)
             for row in self.parse_response(resp):
+                # Convert empty string to None
+                for (key,value) in row.items():
+                    if value=="":
+                        row[key] = None
                 yield row
             previous_token = copy.deepcopy(next_page_token)
             next_page_token = self.get_next_page_token(
