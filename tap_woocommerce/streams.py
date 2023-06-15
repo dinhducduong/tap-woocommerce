@@ -180,7 +180,7 @@ class ProductsAttributeStream(WooCommerceStream):
         th.Property("id", th.IntegerType),
         th.Property("name", th.StringType),
         th.Property("slug", th.StringType),
-        th.Property("type", th.IntegerType),
+        th.Property("type", th.StringType),
         th.Property("order_by", th.StringType),
         th.Property("has_archives", th.BooleanType),
         th.Property("_links", th.ObjectType(
