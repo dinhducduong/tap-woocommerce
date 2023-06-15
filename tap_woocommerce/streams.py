@@ -21,7 +21,9 @@ class ProductsStream(WooCommerceStream):
         th.Property("slug", th.StringType),
         th.Property("permalink", th.StringType),
         th.Property("date_created", th.DateTimeType),
+        th.Property("date_created_gmt", th.DateTimeType),
         th.Property("date_modified", th.DateTimeType),
+        th.Property("date_modified_gmt", th.DateTimeType),
         th.Property("type", th.StringType),
         th.Property("status", th.StringType),
         th.Property("featured", th.BooleanType),
@@ -33,7 +35,9 @@ class ProductsStream(WooCommerceStream):
         th.Property("regular_price", th.NumberType),
         th.Property("sale_price", th.NumberType),
         th.Property("date_on_sale_from", th.DateTimeType),
+        th.Property("date_on_sale_from_gmt", th.DateTimeType),
         th.Property("date_on_sale_to", th.DateTimeType),
+        th.Property("date_on_sale_to_gmt", th.DateTimeType),
         th.Property("price_html", th.StringType),
         th.Property("on_sale", th.BooleanType),
         th.Property("purchasable", th.BooleanType),
@@ -115,4 +119,13 @@ class ProductsStream(WooCommerceStream):
             th.Property("key", th.StringType),
             th.Property("value", th.StringType)
         ))),
+        th.Property("has_options", th.BooleanType),
+        th.Property("_links", th.ObjectType(
+            th.Property("self", th.ArrayType(th.ObjectType(
+                th.Property("href", th.IntegerType),
+            ))),
+            th.Property("collection", th.ArrayType(th.ObjectType(
+                th.Property("href", th.IntegerType),
+            ))),
+        )),
     ).to_dict()
