@@ -122,10 +122,10 @@ class ProductsStream(WooCommerceStream):
         th.Property("has_options", th.BooleanType),
         th.Property("_links", th.ObjectType(
             th.Property("self", th.ArrayType(th.ObjectType(
-                th.Property("href", th.IntegerType),
+                th.Property("href", th.StringType),
             ))),
             th.Property("collection", th.ArrayType(th.ObjectType(
-                th.Property("href", th.IntegerType),
+                th.Property("href", th.StringType),
             ))),
         )),
         th.Property("low_stock_amount", th.ArrayType(th.IntegerType)),
