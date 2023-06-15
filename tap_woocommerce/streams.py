@@ -128,4 +128,5 @@ class ProductsStream(WooCommerceStream):
                 th.Property("href", th.IntegerType),
             ))),
         )),
+        th.Property("low_stock_amount", th.ArrayType(th.IntegerType)),
     ).to_dict()
