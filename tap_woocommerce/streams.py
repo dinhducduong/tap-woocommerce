@@ -167,3 +167,28 @@ class CategoriesStream(WooCommerceStream):
             ))),
         ))
     ).to_dict()
+
+
+class ProductsAttributeStream(WooCommerceStream):
+    """Define custom stream."""
+    name = "products_attribute"
+    path = "products/attributes"
+    primary_keys = ["id"]
+    replication_key = None
+
+    schema = th.PropertiesList(
+        th.Property("id", th.IntegerType),
+        th.Property("name", th.StringType),
+        th.Property("slug", th.StringType),
+        th.Property("type", th.IntegerType),
+        th.Property("order_by", th.StringType),
+        th.Property("has_archives", th.BooleanType),
+        th.Property("_links", th.ObjectType(
+            th.Property("self", th.ArrayType(th.ObjectType(
+                th.Property("href", th.StringType),
+            ))),
+            th.Property("collection", th.ArrayType(th.ObjectType(
+                th.Property("href", th.StringType),
+            ))),
+        ))
+    ).to_dict()
