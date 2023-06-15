@@ -130,3 +130,40 @@ class ProductsStream(WooCommerceStream):
         )),
         th.Property("low_stock_amount", th.ArrayType(th.IntegerType)),
     ).to_dict()
+
+
+class CategoriesStream(WooCommerceStream):
+    """Define custom stream."""
+    name = "categories"
+    path = "products/categories"
+    primary_keys = ["id"]
+    replication_key = None
+
+    schema = th.PropertiesList(
+        th.Property("id", th.IntegerType),
+        th.Property("name", th.StringType),
+        th.Property("slug", th.StringType),
+        th.Property("parent", th.IntegerType),
+        th.Property("description", th.StringType),
+        th.Property("display", th.StringType),
+        th.Property("image", th.ObjectType(
+            th.Property("id", th.IntegerType),
+            th.Property("date_created", th.DateTimeType),
+            th.Property("date_created_gmt", th.DateTimeType),
+            th.Property("date_modified", th.DateTimeType),
+            th.Property("date_modified_gmt", th.DateTimeType),
+            th.Property("src", th.StringType),
+            th.Property("name", th.StringType),
+            th.Property("alt", th.StringType)
+        )),
+        th.Property("menu_order", th.IntegerType),
+        th.Property("count", th.IntegerType),
+        th.Property("_links", th.ObjectType(
+            th.Property("self", th.ArrayType(th.ObjectType(
+                th.Property("href", th.StringType),
+            ))),
+            th.Property("collection", th.ArrayType(th.ObjectType(
+                th.Property("href", th.StringType),
+            ))),
+        ))
+    ).to_dict()
