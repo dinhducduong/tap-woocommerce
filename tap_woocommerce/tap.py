@@ -8,12 +8,14 @@ from singer_sdk import typing as th  # JSON schema typing helpers
 from tap_woocommerce.streams import (
     WooCommerceStream,
     ProductsStream,
-    CategoriesStream
+    CategoriesStream,
+    ProductsAttributeStream
 )
 
 STREAM_TYPES = [
     ProductsStream,
-    CategoriesStream
+    CategoriesStream,
+    ProductsAttributeStream
 ]
 
 
