@@ -29,8 +29,8 @@ class ProductsStream(WooCommerceStream):
         ))),
         th.Property("media_gallery_entries", th.ArrayType(th.ObjectType(
             th.Property("id", th.IntegerType),
-            th.Property("file", th.ArrayType(th.StringType)),
-            th.Property("label", th.ArrayType(th.StringType))
+            th.Property("file", th.StringType),
+            th.Property("label", th.StringType),
         ))),
         th.Property("created_at", th.StringType),
         th.Property("source", th.StringType),
