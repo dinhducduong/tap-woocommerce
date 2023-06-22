@@ -36,41 +36,34 @@ class ProductsStream(WooCommerceStream):
 
     def parse_response(self, response: requests.Response) -> Iterable[dict]:
         print(response.json())
-        # def preprocess_input(data):
-        #     data_convert = []
-        #     for item in data['products']:
-        #         raw_data = {
-        #             "id": item['id'],
-        #             "name": item['title'],
-        #             "sku": item['handle'],
-        #             "created_at": item['created_at'],
-        #             "updated_at": item['updated_at'],
-        #             "options": [],
-        #             "media_gallery_entries": [],
-        #             "source": "shopify"
-        #         }
-        #         for variant in item['variants']:
-        #             raw_data['options'].append({
-        #                 "product_sku": variant['sku'],
-        #                 "title": variant['title'],
-        #                 "price": variant['price'],
-        #                 "sku": variant['sku'],
-        #                 "created_at": variant['created_at'],
-        #                 "updated_at": variant['updated_at'],
-        #             })
-        #         for image in item['images']:
-        #             raw_data['media_gallery_entries'].append({
-        #                 "id": image['id'],
-        #                 "position": image['position'],
-        #                 "file": image['src'],
-        #                 "created_at": image['created_at'],
-        #                 "updated_at": image['updated_at'],
-        #             })
-        #         data_convert.append(raw_data)
-        #     return data_convert
-        # processed_data = response.json()
-        # res = preprocess_input(processed_data)
-        yield from extract_jsonpath(self.records_jsonpath, input=response.json())
+        def preprocess_input(data):
+            data_convert = []
+            for item in data:
+                raw_data = {
+                    "id": item['id'],
+                    "name": item['title'],
+                    "sku": item['slug'],
+                    "created_at": item['date_created'],
+                    "options": [],
+                    "media_gallery_entries": [],
+                    "source": "woocommerce"
+                }
+                for attribute in item['attributes']:
+                    raw_data['options'].append({
+                        "title": attribute['name'],
+                        "values": attribute['options']
+                    })
+                for image in item['images']:
+                    raw_data['media_gallery_entries'].append({
+                        "id": image['id'],
+                        "file": image['src'],
+                        "label": image['name'],
+                    })
+                data_convert.append(raw_data)
+            return data_convert
+        processed_data = response.json()
+        res = preprocess_input(processed_data)
+        yield from extract_jsonpath(self.records_jsonpath, input=res)
 
 
 class CategoriesStream(WooCommerceStream):
