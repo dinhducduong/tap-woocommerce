@@ -78,7 +78,8 @@ class CategoriesStream(WooCommerceStream):
 
     schema = th.PropertiesList(
         th.Property("id", th.IntegerType),
-        th.Property("name", th.StringType)
+        th.Property("name", th.StringType),
+        th.Property("source", th.StringType),
     ).to_dict()
 
     def parse_response(self, response: requests.Response) -> Iterable[dict]:
@@ -88,12 +89,14 @@ class CategoriesStream(WooCommerceStream):
                 raw_data = {
                     "id": item['id'],
                     "name": item['name'],
+                    "source": "woocommerce",
                 }
                 data_convert.append(raw_data)
             return data_convert
         processed_data = response.json()
         res = preprocess_input(processed_data)
         yield from extract_jsonpath(self.records_jsonpath, input={"categories": res})
+
 
 class ProductsAttributeStream(WooCommerceStream):
     """Define custom stream."""
@@ -107,7 +110,8 @@ class ProductsAttributeStream(WooCommerceStream):
         th.Property("id", th.IntegerType),
         th.Property("attribute_code", th.StringType),
         th.Property("default_frontend_label", th.StringType),
-        th.Property("default_value", th.StringType)
+        th.Property("default_value", th.StringType),
+        th.Property("source", th.StringType),
     ).to_dict()
 
     def parse_response(self, response: requests.Response) -> Iterable[dict]:
@@ -118,7 +122,8 @@ class ProductsAttributeStream(WooCommerceStream):
                     "id": item['id'],
                     "attribute_code": item['slug'],
                     "default_frontend_label": item['name'],
-                    "default_value": item['name']
+                    "default_value": item['name'],
+                    "source": "woocommerce",
                 }
                 data_convert.append(raw_data)
             return data_convert
