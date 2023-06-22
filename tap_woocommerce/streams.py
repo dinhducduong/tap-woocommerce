@@ -41,7 +41,7 @@ class ProductsStream(WooCommerceStream):
             for item in data:
                 raw_data = {
                     "id": item['id'],
-                    "name": item['title'],
+                    "name": item['name'],
                     "sku": item['slug'],
                     "created_at": item['date_created'],
                     "options": [],
