@@ -72,59 +72,56 @@ class CategoriesStream(WooCommerceStream):
     """Define custom stream."""
     name = "categories"
     path = "products/categories"
+    records_jsonpath = "$.categories[*]"
     primary_keys = ["id"]
     replication_key = None
 
     schema = th.PropertiesList(
         th.Property("id", th.IntegerType),
-        th.Property("name", th.StringType),
-        th.Property("slug", th.StringType),
-        th.Property("parent", th.IntegerType),
-        th.Property("description", th.StringType),
-        th.Property("display", th.StringType),
-        th.Property("image", th.ObjectType(
-            th.Property("id", th.IntegerType),
-            th.Property("date_created", th.DateTimeType),
-            th.Property("date_created_gmt", th.DateTimeType),
-            th.Property("date_modified", th.DateTimeType),
-            th.Property("date_modified_gmt", th.DateTimeType),
-            th.Property("src", th.StringType),
-            th.Property("name", th.StringType),
-            th.Property("alt", th.StringType)
-        )),
-        th.Property("menu_order", th.IntegerType),
-        th.Property("count", th.IntegerType),
-        th.Property("_links", th.ObjectType(
-            th.Property("self", th.ArrayType(th.ObjectType(
-                th.Property("href", th.StringType),
-            ))),
-            th.Property("collection", th.ArrayType(th.ObjectType(
-                th.Property("href", th.StringType),
-            ))),
-        ))
+        th.Property("name", th.StringType)
     ).to_dict()
 
+    def parse_response(self, response: requests.Response) -> Iterable[dict]:
+        def preprocess_input(data):
+            data_convert = []
+            for item in data:
+                raw_data = {
+                    "id": item['id'],
+                    "name": item['name'],
+                }
+                data_convert.append(raw_data)
+            return data_convert
+        processed_data = response.json()
+        res = preprocess_input(processed_data)
+        yield from extract_jsonpath(self.records_jsonpath, input={"categories": res})
 
 class ProductsAttributeStream(WooCommerceStream):
     """Define custom stream."""
     name = "products_attribute"
     path = "products/attributes"
+    records_jsonpath = "$.products_attributes[*]"
     primary_keys = ["id"]
     replication_key = None
 
     schema = th.PropertiesList(
         th.Property("id", th.IntegerType),
-        th.Property("name", th.StringType),
-        th.Property("slug", th.StringType),
-        th.Property("type", th.StringType),
-        th.Property("order_by", th.StringType),
-        th.Property("has_archives", th.BooleanType),
-        th.Property("_links", th.ObjectType(
-            th.Property("self", th.ArrayType(th.ObjectType(
-                th.Property("href", th.StringType),
-            ))),
-            th.Property("collection", th.ArrayType(th.ObjectType(
-                th.Property("href", th.StringType),
-            ))),
-        ))
+        th.Property("attribute_code", th.StringType),
+        th.Property("default_frontend_label", th.StringType),
+        th.Property("default_value", th.StringType)
     ).to_dict()
+
+    def parse_response(self, response: requests.Response) -> Iterable[dict]:
+        def preprocess_input(data):
+            data_convert = []
+            for item in data:
+                raw_data = {
+                    "id": item['id'],
+                    "attribute_code": item['slug'],
+                    "default_frontend_label": item['name'],
+                    "default_value": item['name']
+                }
+                data_convert.append(raw_data)
+            return data_convert
+        processed_data = response.json()
+        res = preprocess_input(processed_data)
+        yield from extract_jsonpath(self.records_jsonpath, input={"products_attributes": res})
