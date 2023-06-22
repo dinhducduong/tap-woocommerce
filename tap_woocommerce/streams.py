@@ -22,7 +22,7 @@ class ProductsStream(WooCommerceStream):
         th.Property("id", th.IntegerType),
         th.Property("sku", th.StringType),
         th.Property("name", th.StringType),
-        th.Property("price", th.IntegerType),
+        th.Property("price", th.StringType),
         th.Property("options", th.ArrayType(th.ObjectType(
             th.Property("title", th.StringType),
             th.Property("values", th.ArrayType(th.StringType))
@@ -44,7 +44,7 @@ class ProductsStream(WooCommerceStream):
                     "id": item['id'],
                     "name": item['name'],
                     "sku": item['slug'],
-                    "price": int(item['price']),
+                    "price": item['price'],
                     "created_at": item['date_created'],
                     "options": [],
                     "media_gallery_entries": [],
