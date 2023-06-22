@@ -15,6 +15,7 @@ class ProductsStream(WooCommerceStream):
     name = "products"
     path = "products"
     primary_keys = ["id"]
+    records_jsonpath = "$.products[*]"
     replication_key = None
 
     schema = th.PropertiesList(
