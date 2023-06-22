@@ -44,6 +44,7 @@ class ProductsStream(WooCommerceStream):
                     "id": item['id'],
                     "name": item['name'],
                     "sku": item['slug'],
+                    "price": int(item['price']),
                     "created_at": item['date_created'],
                     "options": [],
                     "media_gallery_entries": [],
