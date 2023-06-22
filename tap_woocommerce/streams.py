@@ -35,7 +35,7 @@ class ProductsStream(WooCommerceStream):
     ).to_dict()
 
     def parse_response(self, response: requests.Response) -> Iterable[dict]:
-        print(response)
+        print(response.json())
         # def preprocess_input(data):
         #     data_convert = []
         #     for item in data['products']:
@@ -70,7 +70,7 @@ class ProductsStream(WooCommerceStream):
         #     return data_convert
         # processed_data = response.json()
         # res = preprocess_input(processed_data)
-        yield from extract_jsonpath(self.records_jsonpath, input=response)
+        yield from extract_jsonpath(self.records_jsonpath, input=response.json())
 
 
 class CategoriesStream(WooCommerceStream):
