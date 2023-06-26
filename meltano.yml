@@ -1,27 +1,47 @@
 version: 1
 send_anonymous_usage_stats: true
 project_id: tap-woocommerce
+default_environment: dev
 plugins:
   extractors:
-  - name: tap-woocommerce
-    namespace: tap_woocommerce
-    # TODO: To test using Meltano, replace with absolute path
-    #       to the tap-woocommerce.sh script:
-    executable: ./tap-woocommerce.sh
-    capabilities:
-    - state
-    - catalog
-    - discover
-    config:
-      start_date: '2010-01-01T00:00:00Z'
-    settings:
-    # TODO: To configure using Meltano, declare settings and their types here:
-    - name: username
-    - name: password
-      kind: password
-    - name: start_date
-      value: '2010-01-01T00:00:00Z'
+    - name: tap-woocommerce
+      namespace: tap_woocommerce
+      pip_url: -e .
+      # TODO: To test using Meltano, replace with absolute path
+      #       to the tap-woocommerce.sh script:
+      capabilities:
+        - state
+        - catalog
+        - discover
+      config:
+        site_url: https://shop1.storeofapp.com
+        consumer_key: ck_27795591c2a0676d13be27224601ec1475c71377
+        consumer_secret: cs_31892d94181014001cd8fd4703bd6200267fd387
+      select:
+        - products.*
+      settings:
+        # TODO: To configure using Meltano, declare settings and their types here:
+        - name: username
+        - name: password
+          kind: password
+        - name: start_date
+          value: "2010-01-01T00:00:00Z"
   loaders:
-  - name: target-jsonl
-    variant: andyh1203
-    pip_url: target-jsonl
+    - name: target-elasticsearch
+      variant: dtmirizzi
+      pip_url: target-elasticsearch
+      config:
+        host: TARGET_ELASTICSEARCH_HOST
+        index_format: TARGET_ELASTICSEARCH_INDEX_FORMAT
+        metadata_fields:
+          products:
+            "_id": "id"
+          categories: 
+            "_id": "id"
+          products_attribute: 
+            "_id": "attribute_id"
+
+environments:
+  - name: dev
+  - name: staging
+  - name: prod
