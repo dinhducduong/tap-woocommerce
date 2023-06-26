@@ -9,10 +9,6 @@ plugins:
       pip_url: -e .
       # TODO: To test using Meltano, replace with absolute path
       #       to the tap-woocommerce.sh script:
-      capabilities:
-        - state
-        - catalog
-        - discover
       config:
         site_url: https://shop1.storeofapp.com
         consumer_key: ck_27795591c2a0676d13be27224601ec1475c71377
